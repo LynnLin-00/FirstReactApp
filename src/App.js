@@ -5,6 +5,7 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
+import Signin from './components/Signin/Signin';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
 
@@ -31,6 +32,7 @@ class App extends Component {
       input: '',
       imageUrl: '',
       box: {},
+      route: 'signin',
     }
   }
 
@@ -66,6 +68,16 @@ class App extends Component {
 
   }
 
+  onRouteChange = (route) => {
+    this.setState({route: 'home'});
+    // if (route === 'signout') {
+    //   this.setState({isSignedIn: false})
+    // } else if (route === 'home') {
+    //   this.setState({isSignedIn: true})
+    // }
+    // this.setState({route: route});
+  }
+
   render() {
     const box = this.state.box;
     return (
@@ -74,13 +86,19 @@ class App extends Component {
           params={particlesOptions}              
         />
         <Navigation />
-        <Logo />
-        <Rank />
-        <ImageLinkForm 
-          onInputChange = {this.onInputChange} 
-          onButtonSubmit = {this.onButtonSubmit}
-        />
-        <FaceRecognition box={box} imageUrl={this.state.imageUrl}/>
+        { this.state.route === 'signin'
+          ? <Signin onRouteChange = {this.onRouteChange}/>
+          : <div>
+              <Logo />
+              <Rank />
+              <ImageLinkForm 
+                onInputChange = {this.onInputChange} 
+                onButtonSubmit = {this.onButtonSubmit}
+              />
+              <FaceRecognition box={box} imageUrl={this.state.imageUrl}/>
+            </div>
+        }
+        
       </div>
     );
   }
